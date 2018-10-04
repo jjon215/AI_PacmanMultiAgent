@@ -74,6 +74,26 @@ class ReflexAgent(Agent):
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
+        prevFood = currentGameState.getFood()
+        currentPos = list(successorGameState.getPacmanPosition())
+        maxDistance = -10000000
+        distance = 0
+        foodList = prevFood.asList()
+
+        if action == Directions.STOP:
+            return -10000000
+        for state in newGhostStates:
+            if state.getPosition() == tuple(currentPos) and (state.scaredTimer == 0):
+               return -10000000
+        # Find the distance of all the foods to the pacman
+        for food in foodList:
+            distance = -1 * (manhattanDistance(food, currentPos))
+
+            if (distance > maxDistance):
+                maxDistance = distance
+
+        return maxDistance
+
         return successorGameState.getScore()
 
 def scoreEvaluationFunction(currentGameState):
